@@ -1,0 +1,16 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": "--db mongovcorerun02172024 --mdburl 'mongodb+srv://sivethe:Password0@sivethe-atlastests.apxiw.mongodb.net' --platform mongovcore --version 6.0 --rdir ./post-5.0/results-6.0/"
+        }
+    ]
+}
