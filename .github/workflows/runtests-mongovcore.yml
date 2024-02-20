@@ -21,7 +21,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v2
+
+      - name: Open Web Client Directory
+        #working-directory: src/webclient
+        run: |
+          ls -la
       
       - name: Run docker tests
         uses: ./post-5.0/action.yml
