@@ -9,8 +9,7 @@ import re
 logging.config.fileConfig('logging.conf')
 
 # list of suites run by the docker container
-#SUITES = ['aggregation', 'change_streams', 'core', 'decimal', 'core_txns', 'json_schema']
-SUITES = ['decimal']
+SUITES = ['aggregation', 'change_streams', 'core', 'decimal', 'core_txns', 'json_schema']
 
 def parse_args():
     """

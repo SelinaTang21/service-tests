@@ -20,44 +20,50 @@ echo "results in : ${LOCAL_RESULTS_DIR}"
 
 echo "Starting test suite - Decimal"
 docker run --name mongodb-tests-decimal-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} decimal > /dev/null
-#echo "starting docker logs"
 docker logs --follow mongodb-tests-decimal-${VERSION} > stdout_decimal.log
 docker cp mongodb-tests-decimal-${VERSION}:/results/. ${LOCAL_RESULTS_DIR}
 docker rm -v mongodb-tests-decimal-${VERSION}
-#echo "ls -l ${LOCAL_RESULTS_DIR}"
-#ls -l ${LOCAL_RESULTS_DIR}
-#echo "cp stdout_decimal.log ${LOCAL_RESULTS_DIR}/stdout_decimal.log"
 cp stdout_decimal.log ${LOCAL_RESULTS_DIR}/stdout_decimal.log
 echo "Decimal tests complete"
 
-#echo "Starting test suite - Core"
-#docker run --name mongodb-tests-core-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} core > /dev/null
-#docker logs mongodb-tests-core-${VERSION} > ${LOCAL_RESULTS_DIR}/stdout_core.log
-#docker rm -v mongodb-tests-core-${VERSION}
-#echo "Core tests complete"
+echo "Starting test suite - Core"
+docker run --name mongodb-tests-core-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} core > /dev/null
+docker logs --follow mongodb-tests-core-${VERSION} > stdout_core.log
+docker cp mongodb-tests-core-${VERSION}:/results/. ${LOCAL_RESULTS_DIR}
+docker rm -v mongodb-tests-core-${VERSION}
+cp stdout_core.log ${LOCAL_RESULTS_DIR}/stdout_core.log
+echo "Core tests complete"
 
-#echo "Starting test suite - Transactions"
-#docker run --name mongodb-tests-core-txns-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} core_txns > /dev/null
-#docker logs mongodb-tests-core-txns-${VERSION} > ${LOCAL_RESULTS_DIR}/stdout_core_txns.log
-#docker rm -v mongodb-tests-core-txns-${VERSION}
-#echo "Transactions tests complete"
+echo "Starting test suite - Transactions"
+docker run --name mongodb-tests-core-txns-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} core_txns > /dev/null
+docker logs --follow mongodb-tests-core-txns-${VERSION} > stdout_core_txns.log
+docker cp mongodb-tests-core-txns-${VERSION}:/results/. ${LOCAL_RESULTS_DIR}
+docker rm -v mongodb-tests-core-txns-${VERSION}
+cp stdout_core_txns.log ${LOCAL_RESULTS_DIR}/stdout_core_txns.log
+echo "Transactions tests complete"
 
-#echo "Starting test suite - JSON Schema"
-#docker run --name mongodb-tests-json-schema-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} json_schema > /dev/null
-#docker logs mongodb-tests-json-schema-${VERSION} > ${LOCAL_RESULTS_DIR}/stdout_json_schema.log
-#docker rm -v mongodb-tests-json-schema-${VERSION}
-#echo "JSON Schema tests complete"
+echo "Starting test suite - JSON Schema"
+docker run --name mongodb-tests-json-schema-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} json_schema > /dev/null
+docker logs --follow mongodb-tests-json-schema-${VERSION} > stdout_json_schema.log
+docker cp mongodb-tests-json-schema-${VERSION}:/results/. ${LOCAL_RESULTS_DIR}
+docker rm -v mongodb-tests-json-schema-${VERSION}
+cp stdout_json_schema.log ${LOCAL_RESULTS_DIR}/stdout_json_schema.log
+echo "JSON Schema tests complete"
 
-#echo "Starting test suite - Change Streams"
-#docker run --name mongodb-tests-change-streams-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} change_streams > /dev/null
-#docker logs mongodb-tests-change-streams-${VERSION} > ${LOCAL_RESULTS_DIR}/stdout_change_streams.log
-#docker rm -v mongodb-tests-change-streams-${VERSION}
-#echo "Change Streams tests complete"
+echo "Starting test suite - Change Streams"
+docker run --name mongodb-tests-change-streams-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} change_streams > /dev/null
+docker logs --follow mongodb-tests-change-streams-${VERSION} > stdout_change_streams.log
+docker cp mongodb-tests-change-streams-${VERSION}:/results/. ${LOCAL_RESULTS_DIR}
+docker rm -v mongodb-tests-change-streams-${VERSION}
+cp stdout_change_streams.log ${LOCAL_RESULTS_DIR}/stdout_change_streams.log
+echo "Change Streams tests complete"
 
-#echo "Starting test suite - Aggregation"
-#docker run --name mongodb-tests-aggregation-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} aggregation > /dev/null
-#docker logs mongodb-tests-aggregation-${VERSION} > ${LOCAL_RESULTS_DIR}/stdout_aggregation.log
-#docker rm -v mongodb-tests-aggregation-${VERSION}
-#echo "Aggregation tests complete"
+echo "Starting test suite - Aggregation"
+docker run --name mongodb-tests-aggregation-${VERSION} -e "URI=${URI}" -v ${LOCAL_RESULTS_DIR}:/results ${IMAGE} aggregation > /dev/null
+docker logs --follow mongodb-tests-aggregation-${VERSION} > stdout_aggregation.log
+docker cp mongodb-tests-aggregation-${VERSION}:/results/. ${LOCAL_RESULTS_DIR}
+docker rm -v mongodb-tests-aggregation-${VERSION}
+cp stdout_aggregation.log ${LOCAL_RESULTS_DIR}/stdout_aggregation.log
+echo "Aggregation tests complete"
 
 echo "All tests complete"
