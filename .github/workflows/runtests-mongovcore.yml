@@ -22,11 +22,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: Open Web Client Directory
-        #working-directory: src/webclient
-        run: |
-          ls -la
       
-      - name: Run docker tests
-        uses: ./post-5.0/action.yml
+      - name: Build Mongo tests in docker
+        working-directory: ./post-5.0
+        run: ./docker-build.sh ${{ github.event.inputs.version }}
+
+      - name: Run Mongo tests in docker
+        run: ./post-5.0/docker-run.sh '${{ github.event.inputs.connString }}' ${{ github.event.inputs.version }}
+        
+      - name: Dump Result directories
+        run: |
+          ls -l results-${{ github.event.inputs.version }}
+      
+      - name: Install python 3.10
+        uses: actions/setup-python@v5
+        with:
+            python-version: '3.10' 
+            cache: 'pip' # caching pip dependencies
+      
+      - name: Install analyzer dependencies
+        run: pip install -r requirements.txt
+
+      - name: Analyze test results
+        run: python analyze2.py --platform mongovcore --version ${{ github.event.inputs.version }} --rdir ./results-${{ github.event.inputs.version }}/
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: results.csv
+          path: |
+            results.csv

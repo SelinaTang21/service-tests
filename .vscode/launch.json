@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": "--db mongovcorerun02172024 --mdburl 'mongodb+srv://sivethe:Password0@sivethe-atlastests.apxiw.mongodb.net' --platform mongovcore --version 6.0 --rdir ./post-5.0/results-6.0/"
+            "args": "--platform mongovcore --version 6.0 --rdir ./results-6.0/"
         }
     ]
 }

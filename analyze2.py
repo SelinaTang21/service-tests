@@ -9,7 +9,8 @@ import re
 logging.config.fileConfig('logging.conf')
 
 # list of suites run by the docker container
-SUITES = ['aggregation', 'change_streams', 'core', 'decimal', 'core_txns', 'json_schema']
+#SUITES = ['aggregation', 'change_streams', 'core', 'decimal', 'core_txns', 'json_schema']
+SUITES = ['decimal']
 
 def parse_args():
     """
@@ -18,13 +19,6 @@ def parse_args():
     :return: list of arguments
     """
     parser = argparse.ArgumentParser(description='MongoDB correctness analysis program')
-    parser.add_argument(
-        '--mdburl',
-        type=str,
-        action='store',
-        required=True,
-        help='mongodb uri to store analysis in'
-    )
 
     parser.add_argument(
         '--platform',
@@ -32,14 +26,6 @@ def parse_args():
         action='store',
         required=True,
         help='platform for results, i.e.: atlas, documentdb, foundationdb, cosmos, etc.'
-    )
-
-    parser.add_argument(
-        '--drop',
-        action='store_true',
-        required=False,
-        default=False,
-        help='drop the existing databsae or keep results'
     )
 
     parser.add_argument(
@@ -52,15 +38,6 @@ def parse_args():
     )
 
     parser.add_argument(
-        '--run',
-        type=int,
-        action='store',
-        required=False,
-        default=1,
-        help='run number, use if we want to compare different run results'
-    )
-
-    parser.add_argument(
         '--rdir',
         type=str,
         action='store',
@@ -70,21 +47,12 @@ def parse_args():
     )
 
     parser.add_argument(
-        '--db',
-        type=str,
+        '--run',
+        type=int,
         action='store',
         required=False,
-        default='results',
-        help='database to store results in'
-    )
-
-    parser.add_argument(
-        '--coll',
-        type=str,
-        action='store',
-        required=False,
-        default='correctness',
-        help='collection to store results in'
+        default=1,
+        help='run number, use if we want to compare different run results'
     )
 
     parser.add_argument(
@@ -94,14 +62,6 @@ def parse_args():
         required=False,
         default='./results.csv',
         help='csv file of processed results'
-    )
-
-    parser.add_argument(
-        '--csvfilter',
-        type=str,
-        required=False,
-        default='{}',
-        help='json filter to apply to csv processing, i.e. "{\"platform\": \"atlas\"}"'
     )
     return parser.parse_args()
 
