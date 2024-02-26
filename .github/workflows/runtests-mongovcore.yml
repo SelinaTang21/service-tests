@@ -46,6 +46,13 @@ jobs:
       - name: Analyze test results
         run: python analyze2.py --platform mongovcore --version ${{ github.event.inputs.version }} --rdir ./results-${{ github.event.inputs.version }}/
 
+      - name: Upload test logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-${{ github.event.inputs.version }}
+          path: |
+            results-${{ github.event.inputs.version }}
+
       - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
