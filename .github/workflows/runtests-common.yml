@@ -1,0 +1,68 @@
+name: "runtests-common"
+
+on:
+  workflow_call:
+    inputs:
+      connString:
+        description: 'Connection string to Mongo account'
+        default: '<empty>'
+        required: true
+        type: string
+      platform:
+        description: 'Mongo platform against which the tests will run'
+        required : true
+        type: string
+      version:
+        description: 'Version of the MongoDB jstests to run'
+        default: '6.0'
+        required: false
+        type: string
+      previewFeatures:
+        description: 'Comma seperated list of PreviewFeatures enabled on the account'
+        required: true
+        type: string
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Build Mongo tests in docker
+        working-directory: ./post-5.0
+        run: ./docker-build.sh ${{ inputs.version }}
+
+      - name: Run Mongo tests in docker
+        run: ./post-5.0/docker-run.sh '${{ inputs.connString }}' ${{ inputs.version }}
+        
+      - name: Dump Result directories
+        run: |
+          ls -l results-${{ inputs.version }}
+      
+      - name: Install python 3.10
+        uses: actions/setup-python@v5
+        with:
+            python-version: '3.10' 
+            cache: 'pip' # caching pip dependencies
+      
+      - name: Install analyzer dependencies
+        run: pip install -r requirements.txt
+
+      - name: Analyze test results
+        run: python analyze2.py --platform ${{ inputs.platform }} --version ${{ inputs.version }} --previewFeatures ${{ inputs.previewFeatures }} --rdir ./results-${{ inputs.version }}/
+
+      - name: Upload test logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-${{ inputs.version }}
+          path: |
+            results-${{ inputs.version }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: results.csv
+          path: |
+            results.csv

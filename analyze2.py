@@ -37,6 +37,15 @@ def parse_args():
     )
 
     parser.add_argument(
+        '--previewFeatures',
+        type=str,
+        action='store',
+        required=True,
+        default='v5.0',
+        help='comma seperated list of PreviewFeatures enabled on the account'
+    )
+
+    parser.add_argument(
         '--rdir',
         type=str,
         action='store',
@@ -192,7 +201,7 @@ def main():
         suites = SUITES
 
         with open(args.csv, 'w+') as out:
-            out.write('test file,suite,platform,version,run no,status,errmsg\n')
+            out.write('test file,suite,platform,version,run no,status,preview features,errmsg\n')
             for suite in suites:
                 test_results = get_tests_list(suite, args.platform, args.version, args.run, args.rdir)
                 log_lines = get_log_lines_as_dict(suite, args.rdir)
@@ -210,7 +219,7 @@ def main():
                         err = list(map(lambda x: x.replace('"','""'), err))
                     else:
                         err = err.replace('"','""')
-                    out.write('{},{},{},{},{},{},"{}"\n'.format(tn, s, p, v, run, r, err))
+                    out.write('{},{},{},{},{},{},{},"{}"\n'.format(tn, s, p, v, run, r, args.previewFeatures, err))
 
         logger.info('finished analysis, csv file created: {}'.format(args.csv))
     except Exception as e:

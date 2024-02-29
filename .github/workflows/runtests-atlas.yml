@@ -1,0 +1,24 @@
+# This is a basic workflow that is manually triggered
+name: "runtests-mongovcore"
+
+on:
+  workflow_dispatch:
+    inputs:
+      connString:
+        description: 'Connection string to MongoDB Atlas account'
+        default: '<empty>'
+        required: true
+        type: string
+      version:
+        description: 'Version of the MongoDB jstests to run'
+        default: '6.0'
+        required: false
+        type: string
+
+jobs:
+  run-tests:
+    uses: .github/workflows/runtests-common.yml@main
+    with:
+      connString: ${{ github.event.inputs.connString }}
+      version: ${{ github.event.inputs.version }}
+      platform: "atlas"
