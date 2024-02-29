@@ -1,5 +1,5 @@
 # This is a basic workflow that is manually triggered
-name: "runtests-mongovcore"
+name: "runtests-atlas"
 
 on:
   workflow_dispatch:
