@@ -17,7 +17,7 @@ on:
 
 jobs:
   run-tests:
-    uses: .github/workflows/runtests-common.yml@main
+    uses: ./.github/workflows/runtests-common.yml@main
     with:
       connString: ${{ github.event.inputs.connString }}
       version: ${{ github.event.inputs.version }}
