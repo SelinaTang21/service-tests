@@ -14,6 +14,12 @@ on:
         default: '6.0'
         required: false
         type: string
+      previewFeatures:
+          description: 'List of preview features enabled on the account'
+          required: true
+          type: choice
+          options:
+            - 'None'
 
 jobs:
   run-tests:
@@ -22,3 +28,4 @@ jobs:
       connString: ${{ github.event.inputs.connString }}
       version: ${{ github.event.inputs.version }}
       platform: "atlas"
+      previewFeatures: ${{ github.event.inputs.previewFeatures }}
