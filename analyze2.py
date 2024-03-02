@@ -4,6 +4,7 @@ import json
 import logging.config
 import os
 import re
+from datetime import date
 
 # hardcoded right now
 logging.config.fileConfig('logging.conf')
@@ -55,15 +56,6 @@ def parse_args():
     )
 
     parser.add_argument(
-        '--run',
-        type=int,
-        action='store',
-        required=False,
-        default=1,
-        help='run number, use if we want to compare different run results'
-    )
-
-    parser.add_argument(
         '--csv',
         type=str,
         action='store',
@@ -73,14 +65,13 @@ def parse_args():
     )
     return parser.parse_args()
 
-def get_tests_list(suite, platform, version, run_no, results_dir):
+def get_tests_list(suite, platform, version, results_dir):
     """
     simply get a list of the tests enriched with data about the run
 
     :param suite:
     :param platform:
     :param version:
-    :param run_no:
     :param results_dir:
     :return:
     """
@@ -95,7 +86,6 @@ def get_tests_list(suite, platform, version, run_no, results_dir):
         result['suite'] = suite
         result['platform'] = platform
         result['version'] = version
-        result['run'] = run_no
         result['processed'] = False
     return tests['results']
 
@@ -177,14 +167,14 @@ def process_failures(test_list):
     uncaughtException = re.compile(r'uncaught exception')
     for test in test_list:
         # covers test file ending in js or json
-        if 'log_lines' in test:
+        if 'log_lines' in test and test['status'] != "pass":
             err_list = extract_error(errorMsg, r'errmsg\" : (.*)', test['log_lines'])
             if len(err_list) == 0:
                 err_list = extract_error(uncaughtException, r'uncaught exception: (.*)', test['log_lines'])
             
             # if len(err_list) == 0 and test['status'] == "fail":                
             #    breakpoint()
-            test['errmsg'] = err_list
+            test['errmsg'] = err_list[:1000]
 
 def main():
     """
@@ -192,6 +182,7 @@ def main():
     :return:
     """
     logger.debug('starting analysis')
+    today = date.today()
     args = parse_args()
 
     try:
@@ -201,9 +192,9 @@ def main():
         suites = SUITES
 
         with open(args.csv, 'w+') as out:
-            out.write('test file,suite,platform,version,run no,status,preview features,errmsg\n')
+            out.write('date,test file,suite,platform,version,status,preview features,errmsg\n')
             for suite in suites:
-                test_results = get_tests_list(suite, args.platform, args.version, args.run, args.rdir)
+                test_results = get_tests_list(suite, args.platform, args.version, args.rdir)
                 log_lines = get_log_lines_as_dict(suite, args.rdir)
                 add_logs_lines_to_results(test_results, log_lines)
                 process_failures(test_results)
@@ -211,15 +202,14 @@ def main():
                     tn = result['test_file']
                     s = result['suite']
                     p = result['platform']
-                    v = result['version']
-                    run = result['run']                    
+                    v = result['version']                   
                     r = result['status']
                     err = result['errmsg'] if 'errmsg' in result else ''
                     if type(err) is list:
                         err = list(map(lambda x: x.replace('"','""'), err))
                     else:
                         err = err.replace('"','""')
-                    out.write('{},{},{},{},{},{},{},"{}"\n'.format(tn, s, p, v, run, r, args.previewFeatures, err))
+                    out.write('{},{},{},{},{},{},{},"{}"\n'.format(today, tn, s, p, v, r, args.previewFeatures, err))
 
         logger.info('finished analysis, csv file created: {}'.format(args.csv))
     except Exception as e:
