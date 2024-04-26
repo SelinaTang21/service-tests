@@ -24,6 +24,7 @@ on:
           - 'None'
           - 'GeoSpatial'
           - 'ChangeStream'
+          - 'MultiRegionSupport'
 
 jobs:
   run-tests:
