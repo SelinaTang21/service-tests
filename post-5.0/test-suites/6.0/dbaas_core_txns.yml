@@ -3,6 +3,9 @@ test_kind: js_test
 selector:
   roots:
   - jstests/core/txns/**/*.js
+  - jstests/core/txns/transactions_write_conflicts.js
+  - jstests/core/txns/transactions_write_conflicts_unique_indexes.js
+  - jstests/core/txns/view_reads_in_transaction.js
   exclude_files:
   # Excluding tests requiring admin privs, sharding, a local deployment, or other non-relevance to Atlas
   - jstests/core/txns/multi_statement_transaction_command_args.js
