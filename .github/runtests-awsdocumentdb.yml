@@ -1,0 +1,33 @@
+# This is a basic workflow that is manually triggered
+name: "runtests-awsdocumentdb"
+
+on:
+  workflow_dispatch:
+    inputs:
+      connString:
+        description: 'Connection string to AWS DocumentDB account'
+        default: '<empty>'
+        required: true
+        type: string
+      version:
+        description: 'Version of the MongoDB jstests to run'
+        default: '6.0'
+        required: false
+        type: choice
+        options:
+            - '6.0'
+      previewFeatures:
+        description: 'List of preview features enabled on the account'
+        required: true
+        type: choice
+        options:
+          - 'None'
+
+jobs:
+  run-tests:
+    uses: ./.github/workflows/runtests-common.yml
+    with:
+      connString: ${{ github.event.inputs.connString }}
+      version: ${{ github.event.inputs.version }}
+      platform: "awsdocumentdb"
+      previewFeatures: ${{ github.event.inputs.previewFeatures }}
