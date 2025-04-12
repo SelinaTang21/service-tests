@@ -102,3 +102,4 @@ executor:
     shell_options:
       eval: var testingReplication = true;
       ssl: ''
+      sslAllowInvalidCertificates: ''

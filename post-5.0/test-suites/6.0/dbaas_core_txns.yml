@@ -60,3 +60,4 @@ executor:
     shell_options:
       eval: "testingReplication = true;"
       ssl: ''
+      sslAllowInvalidCertificates: ''

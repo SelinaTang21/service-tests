@@ -47,3 +47,4 @@ executor:
         var testingReplication = true;
         load('jstests/libs/override_methods/set_read_and_write_concerns.js');
       ssl: ''
+      sslAllowInvalidCertificates: ''

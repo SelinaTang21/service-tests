@@ -24,3 +24,4 @@ executor:
   config:
     shell_options:
       ssl: ''
+      sslAllowInvalidCertificates: ''
